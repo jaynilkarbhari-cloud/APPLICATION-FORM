@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form - Nirmal Poly Plast Pvt. Ltd.</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Applied Aptos Font */
+        @font-face {
+            font-family: 'Aptos';
+            src: local('Aptos'), local('Calibri'), local('Arial');
+        }
+        
+        body {
+            font-family: 'Aptos', Calibri, Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        #form-container {
+            /* Adjusted width and removed fixed height to prevent PDF cutoff */
+            width: 190mm; 
+            background: white;
+            margin: 0 auto;
+            padding: 10mm;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 {
+            text-align: center;
+            margin: 5px 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .header-text {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .photo-box {
+            width: 35mm;
+            height: 45mm;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+        .photo-box:hover {
+            background-color: #f9f9f9;
+        }
+        .section-title {
+            background-color: #ddd;
+            padding: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #000;
+        }
+        .form-row {
+            display: flex;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .form-group {
+            margin-right: 15px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .form-group label {
+            margin-right: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="date"], input[type="number"], input[type="email"] {
+            border: none;
+            border-bottom: 1px solid #000;
+            outline: none;
+            padding: 2px 5px;
+            font-family: inherit;
+            background: transparent;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+        td input[type="text"], td input[type="date"] {
+            width: 95%;
+            border: none;
+        }
+        .checkbox-group label {
+            margin-right: 10px;
+            font-weight: normal;
+        }
+        .signature-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 10px;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        button:hover {
+            background-color: #004494;
+        }
+        /* Hide button during PDF generation */
+        .html2pdf__container button {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="btn-container" id="controls">
+        <button onclick="generatePDF()">Download as PDF</button>
+    </div>
+    <br>
+
+    <div id="form-container">
+        <div class="header">
+            <div style="width: 35mm;">
+                <h3>KOLORR</h3>
+            </div>
+            <div class="header-text">
+                <h2>Nirmal Poly Plast Pvt. Ltd.</h2>
+                <h4>(Somnath Unit)</h4>
+                <h3>Application Form</h3>
+                <div style="margin-top: 10px; text-align: left; padding-left: 20px;">
+                    <label>Application for the Post of:</label>
+                    <input type="text" style="width: 200px;">
+                </div>
+            </div>
+            <div class="photo-box" onclick="document.getElementById('photo-upload').click()">
+                <span id="photo-text">Click to upload Photograph</span>
+                <img id="photo-preview" style="display:none; width:100%; height:100%; object-fit:cover;">
+            </div>
+            <input type="file" id="photo-upload" accept="image/*" style="display:none;" onchange="previewImage(event)">
+        </div>
+
+        <div style="text-align: right; margin-bottom: 10px;">
+            <label>Date:</label>
+            <input type="date">
+        </div>
+
+        <div class="section-title">A. Personal Information</div>
+        
+        <div class="form-row">
+            <div class="form-group" style="width: 100%;">
+                <label>1. Name:</label>
+                <input type="text" placeholder="First Name" style="width: 30%;">
+                <input type="text" placeholder="Middle Name" style="width: 30%;">
+                <input type="text" placeholder="Surname" style="width: 30%;">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group" style="width: 100%;">
+                <label>2. Father's Name:</label>
+                <input type="text" placeholder="First Name" style="width: 30%;">
+                <input type="text" placeholder="Middle Name" style="width: 30%;">
+                <input type="text" placeholder="Surname" style="width: 30%;">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>3. D.O.B:</label> <input type="date">
+            </div>
+            <div class="form-group">
+                <label>Age:</label> <input type="number" style="width: 50px;">
+            </div>
+            <div class="form-group">
+                <label>4. Place of Birth:</label> <input type="text">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group checkbox-group">
+                <label>5. Gender:</label>
+                <label><input type="radio" name="gender" value="M"> M</label>
+                <label><input type="radio" name="gender" value="F"> F</label>
+                <label><input type="radio" name="gender" value="T"> T</label>
+            </div>
+            <div class="form-group">
+                <label>6. Marital Status:</label> <input type="text" style="width: 100px;">
+            </div>
+            <div class="form-group">
+                <label>7. Religion:</label> <input type="text" style="width: 100px;">
+            </div>
+            <div class="form-group checkbox-group">
+                <label>8. Category:</label>
+                <label><input type="radio" name="category" value="SC"> SC</label>
+                <label><input type="radio" name="category" value="ST"> ST</label>
+                <label><input type="radio" name="category" value="OBC"> OBC</label>
+                <label><input type="radio" name="category" value="Gen"> Gen</label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>9. Nationality:</label> <input type="text">
+            </div>
+        </div>
+
+        <div class="form-row" style="align-items: flex-start;">
+            <div class="form-group" style="width: 45%; flex-direction: column; align-items: flex-start;">
+                <label>10. Address (Present):</label>
+                <textarea rows="3" style="width: 90%; margin-top: 5px; font-family: inherit;"></textarea>
+                <div style="margin-top: 5px;"><label>Pin:</label> <input type="text" style="width: 100px;"></div>
+            </div>
+            <div class="form-group" style="width: 45%; flex-direction: column; align-items: flex-start;">
+                <label>Address (Permanent):</label>
+                <textarea rows="3" style="width: 90%; margin-top: 5px; font-family: inherit;"></textarea>
+                <div style="margin-top: 5px;"><label>Pin:</label> <input type="text" style="width: 100px;"></div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group"><label>Mobile No:</label> <input type="text" style="width: 150px;"></div>
+            <div class="form-group"><label>Email Id:</label> <input type="email" style="width: 250px;"></div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group"><label>11. Aadhaar No:</label> <input type="text" style="width: 120px;"></div>
+            <div class="form-group"><label>PAN:</label> <input type="text" style="width: 120px;"></div>
+            <div class="form-group"><label>12. PF/UAN No:</label> <input type="text" style="width: 120px;"></div>
+        </div>
+
+        <div class="form-row">
+             <div class="form-group"><label>13. ESIC Details:</label> <input type="text" style="width: 150px;"></div>
+        </div>
+
+        <div class="form-row">
+            <label style="font-weight: bold; font-size: 14px; margin-right: 10px;">14. Physical Standard:</label>
+            <div class="form-group"><label>(A) Height:</label> <input type="text" style="width: 60px;"></div>
+            <div class="form-group"><label>(B) Weight:</label> <input type="text" style="width: 60px;"></div>
+            <div class="form-group"><label>(C) Blood Group:</label> <input type="text" style="width: 60px;"></div>
+            <div class="form-group"><label>(D) Identification:</label> <input type="text" style="width: 150px;"></div>
+        </div>
+
+        <div class="form-row" style="flex-direction: column;">
+            <div class="form-group" style="width: 100%;">
+                <label>15. Have you ever been convicted by a court of Law? Are there any legal Cases against you?</label>
+                <input type="text" style="width: 100%;">
+            </div>
+            <div class="form-group" style="width: 100%;">
+                <label>If yes, please provide Details:</label>
+                <input type="text" style="width: 100%;">
+            </div>
+        </div>
+<BR></BR>
+<br><br><br><br>
+        <div class="section-title">Family Details</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;">Sr. No</th>
+                    <th style="width: 35%;">Name</th>
+                    <th style="width: 20%;">Relation</th>
+                    <th style="width: 20%;">D.O.B/Age</th>
+                    <th style="width: 20%;">Occupation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>2.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>3.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>4.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">Language Proficiency (Mark in Box)</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No</th>
+                    <th>Language</th>
+                    <th>Speak</th>
+                    <th>Write</th>
+                    <th>Read</th>
+                    <th>Remarks If Any</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+                <tr><td>1.</td><td style="text-align: left;">Gujarati</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="text"></td></tr>
+                <tr><td>2.</td><td style="text-align: left;">Hindi</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="text"></td></tr>
+                <tr><td>3.</td><td style="text-align: left;">English</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="text"></td></tr>
+                <tr><td>4.</td><td style="text-align: left;">Other: <input type="text" style="width: 80px; border-bottom: 1px solid #000;"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+        <div class="form-group"><label>Mother Language:</label> <input type="text"></div>
+
+        <div class="section-title">B. Education & Training Details</div>
+        <p style="font-size: 13px; margin: 0 0 5px 0;">1. Educational Records: Starting with S.S.C/Equivalent. (Remarks: FT = Full Time, PT = Part Time, DL = Distance Learning)</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No</th>
+                    <th>Name of Degree / Diploma</th>
+                    <th>Name OF School / University</th>
+                    <th>FT/PT/DL</th>
+                    <th>Duration</th>
+                    <th>Passing Year</th>
+                    <th>Principle Subjects</th>
+                    <th>Percentage / Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>2.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>3.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+
+        <p style="font-size: 13px; margin: 0 0 5px 0;">2. Specialized Training / Certifications:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No</th>
+                    <th>Name of Training / Certification</th>
+                    <th>Institute / Organization</th>
+                    <th>Duration</th>
+                    <th>Subjects</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>2.</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">C. Employment History</div>
+        <p style="font-size: 13px; margin: 0 0 5px 0;">1. Particular of Employment: - Start with your Present Job.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No</th>
+                    <th>Name of company</th>
+                    <th>Duration (From)</th>
+                    <th>Duration (To)</th>
+                    <th>Designation</th>
+                    <th>Salary (CTC) P.A.</th>
+                    <th>Reason for Leaving</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1.</td><td><input type="text"></td><td><input type="date"></td><td><input type="date"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td>2.</td><td><input type="text"></td><td><input type="date"></td><td><input type="date"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+        
+        <div class="form-group" style="width: 100%;">
+            <label>2. Your Present Job Responsibility:</label>
+            <input type="text" style="width: 100%;">
+        </div>
+        <div class="form-group" style="width: 100%;">
+            <label>3. Draw your Present Organization Structure: (Highlight reporting relationship)</label>
+            <textarea rows="2" style="width: 100%; margin-top: 5px; font-family: inherit;"></textarea>
+        </div>
+
+        <p style="font-size: 13px; margin: 10px 0 5px 0;">4. Your key Strength and Area of improvement:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Strength</th>
+                    <th style="width: 50%;">Area of Improvement</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td><input type="text"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">D. General Information</div>
+        <div class="form-row">
+            <div class="form-group checkbox-group" style="width: 100%;">
+                <label>1. Are you related to any employee / associate of our Ratan Group?</label>
+                <label><input type="radio" name="related" value="Yes"> Yes</label>
+                <label><input type="radio" name="related" value="No"> No</label>
+            </div>
+            
+            <div class="form-group" style="width: 100%; margin-bottom: 10px;">
+                <label>If yes, Provide Name:</label> <input type="text" style="width: 200px;">
+                <label style="margin-left: 20px;">Dept:</label> <input type="text" style="width: 150px;">
+            </div>
+            
+            <div class="form-group" style="width: 100%;">
+                <label>Designation:</label> <input type="text" style="width: 200px;">
+                <label style="margin-left: 20px;">Location:</label> <input type="text" style="width: 150px;">
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group checkbox-group" style="width: 100%;">
+                <label>2. Have you been ever interviewed in Our Organisation in Past?</label>
+                <label><input type="radio" name="interviewed" value="Yes"> Yes</label>
+                <label><input type="radio" name="interviewed" value="No"> No</label>
+            </div>
+            <div class="form-group" style="width: 100%;">
+                <label>If yes, please provide Full Details:</label> <input type="text" style="width: 70%;">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>3. Expected Salary (CTC) Per Annum:</label> <input type="text">
+            </div>
+            <div class="form-group">
+                <label>Notice Period Required for Joining:</label> <input type="text">
+            </div>
+        </div>
+
+        <p style="font-size: 13px; margin: 10px 0 5px 0;">4. Reference: - Please Give at least Two Persons who are not your Friends / Family Member:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Occupations</th>
+                    <th>Contact No</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+            </tbody>
+        </table>
+
+        <p style="font-size: 12px; text-align: justify; margin-top: 20px;">
+            I hereby declare that the information & details furnished herein are true and correct to the best of my knowledge and belief, if any information is found to be suppressed, misrepresented or false, I shall be responsible for the consequences and shall render myself liable to disciplinary action including termination of services without any compensation and notice.
+        </p>
+
+        <div class="signature-section">
+            <div>
+                <div style="margin-bottom: 10px;"><label>Place:</label> <input type="text"></div>
+                <div><label>Date:</label> <input type="date"></div>
+            </div>
+            <div style="text-align: center;">
+                <input type="text" placeholder="Type your signature here" style="width: 250px; text-align: center; font-size: 16px; font-weight: bold; border-bottom: 1px solid black;">
+                <br>
+                <label style="display: block; margin-top: 5px; font-size: 14px;">Signature of Applicant</label>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Function to handle image upload preview
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('photo-preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+                document.getElementById('photo-text').style.display = 'none';
+            };
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+
+        // Function to generate the PDF
+        function generatePDF() {
+            const element = document.getElementById('form-container');
+            
+            // Adjusted margins to prevent cutout at edges
+            const opt = {
+                margin:       [10, 10, 10, 10], // Increased margins [Top, Left, Bottom, Right]
+                filename:     'Application_Form.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
